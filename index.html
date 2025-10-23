@@ -19,6 +19,9 @@
             --pearl: #fbfaf5;
             --lavender: #f1edff;
             --midnight: #120a2c;
+            --sand: #f5f1e8;
+            --ink-muted: rgba(13, 12, 34, 0.72);
+            --ink-soft: rgba(13, 12, 34, 0.58);
             --grain: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAIAAAC0tY+IAAAAKElEQVR4nO3PMQEAAAwCoNm/9HIwYQIAAAAAAAAAAAAAAAAAAAAAAPAZ2xYAAQcxrXsAAAAASUVORK5CYII=");
             --max-width: min(1100px, 92vw);
         }
@@ -100,6 +103,260 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 32px;
+
+        .section-preview {
+            background: var(--sand);
+        }
+
+        .preview-stage {
+            width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 42px;
+            align-items: center;
+        }
+
+        .preview-copy h2 {
+            margin: 0 0 24px;
+            font-size: clamp(2.6rem, 3.6vw, 3.8rem);
+            color: rgba(13, 12, 34, 0.92);
+        }
+
+        .preview-copy p {
+            margin: 0 0 18px;
+            line-height: 1.6;
+            color: var(--ink-muted);
+        }
+
+        .preview-visual {
+            position: relative;
+            background: white;
+            border-radius: 42px;
+            padding: 28px;
+            box-shadow: 0 30px 120px rgba(18, 10, 44, 0.12);
+            border: 1px solid rgba(13, 12, 34, 0.06);
+            overflow: hidden;
+        }
+
+        .preview-visual::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.25;
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+        }
+
+        .preview-visual img {
+            width: 100%;
+            border-radius: 28px;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-press {
+            background: var(--deep-void);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .press-inner {
+            width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            gap: 36px;
+        }
+
+        .press-headline {
+            font-size: clamp(2.2rem, 3vw, 3.2rem);
+            margin: 0;
+        }
+
+        .press-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            opacity: 0.7;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .press-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .press-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .press-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.3;
+            mix-blend-mode: soft-light;
+        }
+
+        .press-card p {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .press-card span {
+            display: block;
+            margin-top: 20px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            opacity: 0.65;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-faq {
+            background: var(--pearl);
+        }
+
+        .faq-wrapper {
+            width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .faq-wrapper h2 {
+            margin: 0 0 32px;
+            font-size: clamp(2.3rem, 3.2vw, 3.4rem);
+            color: rgba(13, 12, 34, 0.9);
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 28px;
+            border: 1px solid rgba(13, 12, 34, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faq-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.22;
+            mix-blend-mode: soft-light;
+        }
+
+        .faq-item h3,
+        .faq-item p {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+        }
+
+        .faq-item h3 {
+            font-size: 1.2rem;
+            color: rgba(13, 12, 34, 0.9);
+            margin-bottom: 10px;
+        }
+
+        .faq-item p {
+            line-height: 1.6;
+            color: var(--ink-soft);
+        }
+
+        .section-founder {
+            background: var(--lavender);
+        }
+
+        .founder-inner {
+            width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 36px;
+            align-items: center;
+        }
+
+        .founder-note {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 32px;
+            padding: 34px;
+            border: 1px solid rgba(13, 12, 34, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .founder-note::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.2;
+            mix-blend-mode: soft-light;
+        }
+
+        .founder-note p,
+        .founder-note span {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+            color: rgba(13, 12, 34, 0.82);
+        }
+
+        .founder-note span {
+            display: block;
+            margin-top: 22px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+            color: rgba(13, 12, 34, 0.6);
+        }
+
+        .founder-portrait {
+            background: white;
+            border-radius: 50%;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+            display: grid;
+            place-items: center;
+            position: relative;
+            box-shadow: 0 22px 60px rgba(18, 10, 44, 0.2);
+        }
+
+        .founder-portrait::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.25;
+            mix-blend-mode: soft-light;
+            border-radius: 50%;
+        }
+
+        .founder-portrait svg {
+            width: 140px;
+            height: 140px;
+            opacity: 0.8;
+        }
             position: relative;
             z-index: 1;
             text-align: left;
@@ -537,6 +794,15 @@
             border-radius: 24px;
         }
 
+        .device-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
         .device-tag {
             position: absolute;
             top: 22px;
@@ -736,8 +1002,15 @@
 
             .flow-grid,
             .device-stage,
-            .membership-grid {
+            .membership-grid,
+            .preview-stage,
+            .founder-inner {
                 grid-template-columns: 1fr;
+            }
+
+            .founder-portrait {
+                width: 180px;
+                height: 180px;
             }
         }
     </style>
@@ -766,6 +1039,23 @@
     </header>
 
     <main>
+        <section class="section section-preview" aria-label="Interface preview">
+            <div class="preview-stage">
+                <div class="preview-copy">
+                    <h2>See the sanctuary in motion.</h2>
+                    <p>
+                        The Thinks. interface feels like walking into a pastel chapel—open, precise, and soul-soothing. Every screen is crafted to focus your energy on the ritual ahead.
+                    </p>
+                    <p>
+                        We paired typography with soft Italian summer tones, then added breathing room that invites you to slow down.
+                    </p>
+                </div>
+                <div class="preview-visual">
+                    <img src="https://dummyimage.com/900x520/efe7ff/0d0c22.png&text=Thinks.+Preview" alt="Screenshot collage of the Thinks app interface with pastel gradients" loading="lazy">
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="vision">
             <div class="panel">
                 <h2>Colorful calm engineered for brave reflection.</h2>
@@ -985,6 +1275,10 @@
                             <circle cx="420" cy="120" r="14" fill="#0d0c22" opacity="0.5" />
                         </svg>
                     </figure>
+                    <figure class="device-frame">
+                        <span class="device-tag">iPad</span>
+                        <img src="https://dummyimage.com/1024x768/dff7ff/0d0c22.png&text=Thinks.+iPad" alt="Thinks iPad dashboard mockup" loading="lazy">
+                    </figure>
                 </div>
             </div>
         </section>
@@ -1012,6 +1306,74 @@
                         <p>Seasonal access to live salons with the founding team and invited mystics. Includes custom color therapy and mirror display scenes.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="section section-press" aria-label="Press">
+            <div class="press-inner">
+                <h2 class="press-headline">Early whispers from those who experienced Thinks.</h2>
+                <div class="press-logos">
+                    <span>Monocle</span>
+                    <span>Kinfolk</span>
+                    <span>Wallpaper*</span>
+                    <span>Cool Hunting</span>
+                </div>
+                <div class="press-grid">
+                    <article class="press-card">
+                        <p>“Thinks. renders inner work with the polish of a luxury product reveal. It feels like mindfulness imagined by an architect.”</p>
+                        <span>MONOCLE FUTURES</span>
+                    </article>
+                    <article class="press-card">
+                        <p>“A sanctuary of color and sound that respects quiet. Finally, a spiritual tool that doesn’t shout for your attention.”</p>
+                        <span>KINFOLK</span>
+                    </article>
+                    <article class="press-card">
+                        <p>“The pastel interface flows like a seafront sunrise in Positano—calm, intentional, unforgettable.”</p>
+                        <span>WALLPAPER*</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-faq" aria-label="Frequently asked questions">
+            <div class="faq-wrapper">
+                <h2>Questions before you step inside?</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>Is Thinks. a social network?</h3>
+                        <p>No feeds, no likes, no algorithmic nudges. Thinks. is a private studio. You can invite a circle, but you always decide what’s shared.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How does the app adapt to me?</h3>
+                        <p>We analyze tone, pacing, and ritual completion using on-device intelligence. Insights stay encrypted and surface as gentle recommendations.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can I import my existing practices?</h3>
+                        <p>Yes. Import meditations, breath exercises, or journal prompts and our ritual engine redesigns them with Thinks.’ color language.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What devices are supported?</h3>
+                        <p>iPhone and iPad at launch, with optional mirror display and Apple TV scenes for your meditation space.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-founder" aria-label="Founder story">
+            <div class="founder-inner">
+                <div class="founder-portrait" aria-hidden="true">
+                    <svg viewBox="0 0 120 120" role="presentation">
+                        <circle cx="60" cy="60" r="58" fill="#f4ecff" />
+                        <path d="M40 72 C44 58 52 50 60 50 C68 50 76 58 80 72" stroke="#0d0c22" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.6" />
+                        <circle cx="45" cy="50" r="6" fill="#0d0c22" opacity="0.6" />
+                        <circle cx="75" cy="50" r="6" fill="#0d0c22" opacity="0.6" />
+                    </svg>
+                </div>
+                <article class="founder-note">
+                    <p>“Thinks. was born from private retreats along the Amalfi coast, where every ritual began with color and ended with calm. We wanted to bottle that feeling—a studio that greets you like your favorite seaside sanctuary.”</p>
+                    <p>“We believe spiritual growth deserves the same design care as the finest hardware—precise, cinematic, and deeply human.”</p>
+                    <span>Elena Venti · Founder & Ritual Architect</span>
+                </article>
             </div>
         </section>
 
