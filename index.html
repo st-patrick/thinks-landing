@@ -16,6 +16,9 @@
             --limoncello: #f9f0c7;
             --seafoam: #d7f4ef;
             --pistachio: #c8e4cf;
+            --pearl: #fbfaf5;
+            --lavender: #f1edff;
+            --midnight: #120a2c;
             --grain: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAIAAAC0tY+IAAAAKElEQVR4nO3PMQEAAAwCoNm/9HIwYQIAAAAAAAAAAAAAAAAAAAAAAPAZ2xYAAQcxrXsAAAAASUVORK5CYII=");
             --max-width: min(1100px, 92vw);
         }
@@ -420,6 +423,196 @@
             opacity: 0.4;
         }
 
+        .section-flow {
+            background: var(--pearl);
+        }
+
+        .flow-grid {
+            width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .flow-card {
+            background: white;
+            border-radius: 32px;
+            padding: 32px;
+            border: 1px solid rgba(13, 12, 34, 0.08);
+            color: rgba(13, 12, 34, 0.82);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flow-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            mix-blend-mode: soft-light;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .flow-card svg {
+            width: 48px;
+            height: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-card h3,
+        .flow-card p {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+        }
+
+        .flow-card h3 {
+            font-size: 1.45rem;
+            color: rgba(13, 12, 34, 0.9);
+        }
+
+        .flow-card p {
+            line-height: 1.55;
+        }
+
+        .section-devices {
+            background: var(--lavender);
+        }
+
+        .device-stage {
+            width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+            align-items: center;
+        }
+
+        .device-copy h2 {
+            margin: 0 0 20px;
+            font-size: clamp(2.4rem, 3.2vw, 3.6rem);
+            color: rgba(13, 12, 34, 0.92);
+        }
+
+        .device-copy p {
+            margin: 0 0 20px;
+            line-height: 1.6;
+            color: rgba(13, 12, 34, 0.78);
+        }
+
+        .device-mosaic {
+            display: grid;
+            gap: 20px;
+        }
+
+        .device-frame {
+            background: var(--midnight);
+            border-radius: 36px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(18, 10, 44, 0.25);
+        }
+
+        .device-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.35;
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+        }
+
+        .device-frame svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 24px;
+        }
+
+        .device-tag {
+            position: absolute;
+            top: 22px;
+            left: 24px;
+            background: rgba(255, 255, 255, 0.14);
+            color: rgba(255, 255, 255, 0.86);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .membership-panel {
+            width: var(--max-width);
+            margin: 0 auto;
+            background: white;
+            color: rgba(13, 12, 34, 0.86);
+            border-radius: 36px;
+            padding: 60px;
+            border: 1px solid rgba(13, 12, 34, 0.08);
+            box-shadow: 0 30px 100px rgba(18, 10, 44, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .membership-panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--grain);
+            opacity: 0.35;
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+        }
+
+        .membership-panel h2 {
+            margin: 0 0 18px;
+        }
+
+        .membership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+            margin-top: 40px;
+        }
+
+        .membership-card {
+            background: rgba(239, 231, 255, 0.6);
+            border-radius: 24px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border: 1px solid rgba(13, 12, 34, 0.08);
+        }
+
+        .membership-card strong {
+            font-size: 2.2rem;
+        }
+
+        .membership-card span {
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .membership-card p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
         .stories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -480,7 +673,7 @@
         footer {
             padding: 80px 0;
             background: black;
-            color: rgba(239, 231, 255, 0.72);
+            color: rgba(239, 231, 255, 0.86);
         }
 
         footer .footer-inner {
@@ -521,7 +714,7 @@
             flex-wrap: wrap;
             gap: 12px;
             font-size: 0.9rem;
-            opacity: 0.7;
+            opacity: 0.85;
         }
 
         @media (max-width: 720px) {
@@ -535,6 +728,16 @@
 
             .cta-group {
                 flex-direction: column;
+            }
+
+            .membership-panel {
+                padding: 40px 28px;
+            }
+
+            .flow-grid,
+            .device-stage,
+            .membership-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -659,6 +862,155 @@
                     <p>
                         Request an invite to explore early access cohorts and seasonal salons hosted by the founding team.
                     </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-flow" aria-label="Daily flow">
+            <div class="panel" style="background: transparent; box-shadow: none; color: rgba(13, 12, 34, 0.84);">
+                <h2>Daily flow, gracefully structured.</h2>
+                <p>
+                    Thinks. arranges your day like a conductor—soft cues in the morning, centered check-ins at noon, reflective membranes by night. Every step carries a visual tempo so you know how to feel before you think.
+                </p>
+                <div class="flow-grid">
+                    <article class="flow-card">
+                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="gradient-awaken" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffb48b" />
+                                    <stop offset="100%" stop-color="#ffd1e6" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#gradient-awaken)" />
+                            <circle cx="32" cy="32" r="12" fill="rgba(255,255,255,0.85)" />
+                        </svg>
+                        <h3>Awaken Ritual</h3>
+                        <p>Receive a five-minute, pastel-lit walkthrough that centers gratitude, breath, and the intention you choose while the sun rises.</p>
+                    </article>
+                    <article class="flow-card">
+                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="gradient-attune" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#d1f7ff" />
+                                    <stop offset="100%" stop-color="#b0e2ff" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#gradient-attune)" />
+                            <path d="M16 40 L26 28 L34 36 L48 22" stroke="#0d0c22" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85" />
+                        </svg>
+                        <h3>Attune Midday</h3>
+                        <p>Check-in prompts and biofeedback cues keep you aligned without dragging you into data overload—just the signals that matter.</p>
+                    </article>
+                    <article class="flow-card">
+                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="gradient-release" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#c4f0d7" />
+                                    <stop offset="100%" stop-color="#a6e0ff" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#gradient-release)" />
+                            <path d="M20 24 C20 20 24 18 28 20 C30 21 34 21 36 20 C40 18 44 20 44 24 V44 H20 Z" fill="rgba(255,255,255,0.85)" />
+                        </svg>
+                        <h3>Release Twilight</h3>
+                        <p>Evening reflections dissolve tension with sound therapy and visual breathing loops that guide you gently into rest.</p>
+                    </article>
+                    <article class="flow-card">
+                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="gradient-summit" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#f7e5ff" />
+                                    <stop offset="100%" stop-color="#ffe6b5" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="6" y="10" width="52" height="44" rx="16" fill="url(#gradient-summit)" />
+                            <path d="M18 40 L28 26 L34 34 L46 20" stroke="#0d0c22" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8" />
+                            <circle cx="46" cy="20" r="6" fill="rgba(13,12,34,0.85)" />
+                        </svg>
+                        <h3>Sunday Summit</h3>
+                        <p>Weekly cinematic recap surfaces the patterns you want to keep and suggests rituals for the coming chapter.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-devices" aria-label="Device experiences">
+            <div class="device-stage">
+                <div class="device-copy">
+                    <h2>Beautiful on every luminous surface.</h2>
+                    <p>
+                        Designed for iPhone, iPad, and ambient displays. Thinks. adapts to your light and space—whether you journal in a sunlit studio or meditate by moonlight.
+                    </p>
+                    <p>
+                        Mockups showcase the pastel interface palette, typographic elegance, and the way gradients subtly shift as your state evolves.
+                    </p>
+                </div>
+                <div class="device-mosaic">
+                    <figure class="device-frame">
+                        <span class="device-tag">iPhone</span>
+                        <svg viewBox="0 0 360 720" role="img" aria-labelledby="iphone-mockup-title">
+                            <title id="iphone-mockup-title">Thinks iPhone interface mockup</title>
+                            <defs>
+                                <linearGradient id="iphone-body" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fdf1ec" />
+                                    <stop offset="100%" stop-color="#f2f5ff" />
+                                </linearGradient>
+                                <linearGradient id="iphone-card" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ffe7d6" />
+                                    <stop offset="100%" stop-color="#ffd0f0" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="8" y="8" width="344" height="704" rx="46" fill="url(#iphone-body)" />
+                            <rect x="58" y="120" width="244" height="320" rx="34" fill="url(#iphone-card)" />
+                            <rect x="58" y="470" width="244" height="120" rx="24" fill="#f3f5ff" opacity="0.85" />
+                            <rect x="118" y="52" width="124" height="12" rx="6" fill="#d8d6f6" />
+                            <circle cx="180" cy="622" r="52" fill="#0d0c22" opacity="0.78" />
+                        </svg>
+                    </figure>
+                    <figure class="device-frame">
+                        <span class="device-tag">Mirror Display</span>
+                        <svg viewBox="0 0 540 360" role="img" aria-labelledby="mirror-mockup-title">
+                            <title id="mirror-mockup-title">Thinks ambient display mockup</title>
+                            <defs>
+                                <linearGradient id="mirror-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#dff7ff" />
+                                    <stop offset="50%" stop-color="#f1efff" />
+                                    <stop offset="100%" stop-color="#ffe9f4" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="10" y="10" width="520" height="340" rx="38" fill="url(#mirror-gradient)" />
+                            <rect x="50" y="70" width="440" height="156" rx="28" fill="rgba(13,12,34,0.12)" />
+                            <rect x="50" y="250" width="440" height="70" rx="18" fill="rgba(13,12,34,0.08)" />
+                            <circle cx="470" cy="120" r="26" fill="#0d0c22" opacity="0.7" />
+                            <circle cx="420" cy="120" r="14" fill="#0d0c22" opacity="0.5" />
+                        </svg>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-label="Membership">
+            <div class="membership-panel">
+                <h2>Membership designed for devotion.</h2>
+                <p>
+                    We release Thinks. invites in slow waves to protect intimacy. Each tier is priced the same—it’s about how deep you want to go, not how much you can pay.
+                </p>
+                <div class="membership-grid">
+                    <div class="membership-card">
+                        <span>01</span>
+                        <strong>Solos</strong>
+                        <p>Access daily rituals, guided reflections, and your personal aura analytics. Perfect for founders, artists, and seekers building private practice.</p>
+                    </div>
+                    <div class="membership-card">
+                        <span>02</span>
+                        <strong>Circles</strong>
+                        <p>Create a private cohort with trusted friends or partners. Share collective rituals while keeping journals encrypted and personal.</p>
+                    </div>
+                    <div class="membership-card">
+                        <span>03</span>
+                        <strong>Salons</strong>
+                        <p>Seasonal access to live salons with the founding team and invited mystics. Includes custom color therapy and mirror display scenes.</p>
+                    </div>
                 </div>
             </div>
         </section>
