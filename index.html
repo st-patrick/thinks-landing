@@ -4,1419 +4,977 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thinks. — Private Evolution Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=typography,aspect-ratio"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#0e0b1f',
+                        petal: '#f6f1ff',
+                        'deep-void': '#08061b',
+                        ember: '#ff6c8a',
+                        limoncello: '#fbe4b5',
+                        seafoam: '#d7f4ef',
+                        pistachio: '#cbe7cf',
+                        lavender: '#f1edff',
+                        midnight: '#1a1034',
+                        sorbet: '#ffd7c7',
+                        marina: '#c9ecff'
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                        display: ['Space Grotesk', 'Manrope', 'Inter', 'system-ui', 'sans-serif']
+                    },
+                    boxShadow: {
+                        halo: '0 40px 160px rgba(115, 83, 255, 0.28)',
+                        card: '0 30px 80px rgba(8, 6, 28, 0.55)'
+                    }
+                }
+            }
+        };
+    </script>
     <style>
         :root {
             color-scheme: only light;
-            --ink: #0d0c22;
-            --deep-void: #0b041d;
-            --petal: #efe7ff;
-            --ember: #ff5f8f;
-            --aura-gradient: linear-gradient(135deg, #5b26ff 0%, #ff6cb5 60%, #ffd86f 100%);
-            --amalfi: linear-gradient(135deg, #f3f4ff 0%, #ffe2d1 50%, #ffddea 100%);
-            --limoncello: #f9f0c7;
-            --seafoam: #d7f4ef;
-            --pistachio: #c8e4cf;
-            --pearl: #fbfaf5;
-            --lavender: #f1edff;
-            --midnight: #120a2c;
-            --sand: #f5f1e8;
-            --ink-muted: rgba(13, 12, 34, 0.72);
-            --ink-soft: rgba(13, 12, 34, 0.58);
-            --grain: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAIAAAC0tY+IAAAAKElEQVR4nO3PMQEAAAwCoNm/9HIwYQIAAAAAAAAAAAAAAAAAAAAAAPAZ2xYAAQcxrXsAAAAASUVORK5CYII=");
-            --max-width: min(1100px, 92vw);
-        }
-
-        * {
-            box-sizing: border-box;
+            --legacy-ink: #0d0c22;
+            --legacy-ink-muted: rgba(13, 12, 34, 0.72);
+            --legacy-ink-soft: rgba(13, 12, 34, 0.58);
+            --legacy-petal: #efe7ff;
+            --legacy-amalfi: linear-gradient(135deg, #f3f4ff 0%, #ffe2d1 50%, #ffddea 100%);
+            --legacy-grain: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAIAAAC0tY+IAAAAKElEQVR4nO3PMQEAAAwCoNm/9HIwYQIAAAAAAAAAAAAAAAAAAAAAAPAZ2xYAAQcxrXsAAAAASUVORK5CYII=");
         }
 
         body {
-            margin: 0;
-            font-family: 'Futura', 'Futura PT', 'Avenir Next', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--deep-void);
-            color: var(--ink);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #08061b 0%, #0b0a27 25%, #fde7d4 140%);
         }
 
-        header {
-            position: relative;
-            padding: 64px 0 140px;
-            overflow: hidden;
-            color: var(--ink);
+        .grain-overlay,
+        .grain-overlay::before {
+            pointer-events: none;
         }
 
-        header::before {
-            content: '';
-            position: absolute;
+        .grain-overlay {
+            position: fixed;
             inset: 0;
-            background: var(--amalfi);
             z-index: 0;
         }
 
-        header::after {
+        .grain-overlay::before {
             content: '';
             position: absolute;
             inset: 0;
-            background-image: var(--grain);
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAIAAAC0tY+IAAAAKElEQVR4nO3PMQEAAAwCoNm/9HIwYQIAAAAAAAAAAAAAAAAAAAAAAPAZ2xYAAQcxrXsAAAAASUVORK5CYII=");
+            opacity: 0.18;
+            mix-blend-mode: soft-light;
+        }
+
+        .nav-ambient {
+            transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, transform 0.6s ease;
+        }
+
+        .nav-ambient.scrolled {
+            background: rgba(17, 12, 48, 0.88);
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 18px 44px rgba(5, 4, 18, 0.45);
+        }
+
+        .parallax-layer {
+            will-change: transform;
+            transition: transform 0.12s ease-out;
+        }
+
+        .tilt-scene {
+            perspective: 1400px;
+        }
+
+        .tilt-card {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            will-change: transform;
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        .tilt-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .tilt-card.is-tilting::before,
+        .tilt-card:hover::before {
+            opacity: 1;
+        }
+
+        .tilt-card.is-tilting {
+            box-shadow: 0 30px 90px rgba(8, 6, 28, 0.45);
+        }
+
+        .three-stage {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .three-stage canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .legacy-hero {
+            position: relative;
+            margin-top: 5.5rem;
+            padding: 100px 0 140px;
+            color: var(--legacy-ink);
+            overflow: hidden;
+        }
+
+        .legacy-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--legacy-amalfi);
+            z-index: 0;
+        }
+
+        .legacy-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: var(--legacy-grain);
             mix-blend-mode: soft-light;
             opacity: 0.4;
             z-index: 0;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 0 auto;
-            width: var(--max-width);
-            z-index: 2;
-            position: relative;
-        }
-
-        .logo {
-            font-family: 'Futura', 'Futura PT', 'Avenir Next', sans-serif;
-            font-weight: 700;
-            font-size: 28px;
-            letter-spacing: 0.12em;
-        }
-
-        .nav-actions a {
-            text-decoration: none;
-            font-weight: 600;
-            color: var(--ink);
-            padding: 10px 26px;
-            border-radius: 999px;
-            border: 1px solid rgba(13, 12, 34, 0.28);
-            transition: transform 200ms ease, background-color 200ms ease;
-        }
-
-        .nav-actions a:hover {
-            background: rgba(13, 12, 34, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .hero {
-            width: var(--max-width);
-            margin: 120px auto 0;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 32px;
-
-        .section-preview {
-            background: var(--sand);
-        }
-
-        .preview-stage {
-            width: var(--max-width);
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 42px;
-            align-items: center;
-        }
-
-        .preview-copy h2 {
-            margin: 0 0 24px;
-            font-size: clamp(2.6rem, 3.6vw, 3.8rem);
-            color: rgba(13, 12, 34, 0.92);
-        }
-
-        .preview-copy p {
-            margin: 0 0 18px;
-            line-height: 1.6;
-            color: var(--ink-muted);
-        }
-
-        .preview-visual {
-            position: relative;
-            background: white;
-            border-radius: 42px;
-            padding: 28px;
-            box-shadow: 0 30px 120px rgba(18, 10, 44, 0.12);
-            border: 1px solid rgba(13, 12, 34, 0.06);
-            overflow: hidden;
-        }
-
-        .preview-visual::after {
-            content: '';
+        .legacy-halo {
             position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.25;
-            mix-blend-mode: soft-light;
+            inset: -200px -160px auto auto;
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.4) 0%, rgba(241, 243, 255, 0) 70%);
+            filter: blur(22px);
+            opacity: 0.65;
+            z-index: 1;
             pointer-events: none;
         }
 
-        .preview-visual img {
-            width: 100%;
-            border-radius: 28px;
-            display: block;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-press {
-            background: var(--deep-void);
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .press-inner {
-            width: var(--max-width);
-            margin: 0 auto;
-            display: grid;
-            gap: 36px;
-        }
-
-        .press-headline {
-            font-size: clamp(2.2rem, 3vw, 3.2rem);
-            margin: 0;
-        }
-
-        .press-logos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 28px;
-            opacity: 0.7;
-            letter-spacing: 0.32em;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .press-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .press-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            padding: 28px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .press-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.3;
-            mix-blend-mode: soft-light;
-        }
-
-        .press-card p {
-            margin: 0;
-            font-size: 1.05rem;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        .press-card span {
-            display: block;
-            margin-top: 20px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            opacity: 0.65;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-faq {
-            background: var(--pearl);
-        }
-
-        .faq-wrapper {
-            width: var(--max-width);
-            margin: 0 auto;
-        }
-
-        .faq-wrapper h2 {
-            margin: 0 0 32px;
-            font-size: clamp(2.3rem, 3.2vw, 3.4rem);
-            color: rgba(13, 12, 34, 0.9);
-        }
-
-        .faq-list {
-            display: grid;
-            gap: 18px;
-        }
-
-        .faq-item {
-            background: white;
-            border-radius: 24px;
-            padding: 24px 28px;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .faq-item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.22;
-            mix-blend-mode: soft-light;
-        }
-
-        .faq-item h3,
-        .faq-item p {
-            position: relative;
-            z-index: 1;
-            margin: 0;
-        }
-
-        .faq-item h3 {
-            font-size: 1.2rem;
-            color: rgba(13, 12, 34, 0.9);
-            margin-bottom: 10px;
-        }
-
-        .faq-item p {
-            line-height: 1.6;
-            color: var(--ink-soft);
-        }
-
-        .section-founder {
-            background: var(--lavender);
-        }
-
-        .founder-inner {
-            width: var(--max-width);
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 36px;
-            align-items: center;
-        }
-
-        .founder-note {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 32px;
-            padding: 34px;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .founder-note::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.2;
-            mix-blend-mode: soft-light;
-        }
-
-        .founder-note p,
-        .founder-note span {
-            position: relative;
-            z-index: 1;
-            margin: 0;
-            color: rgba(13, 12, 34, 0.82);
-        }
-
-        .founder-note span {
-            display: block;
-            margin-top: 22px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-size: 0.78rem;
-            color: rgba(13, 12, 34, 0.6);
-        }
-
-        .founder-portrait {
-            background: white;
-            border-radius: 50%;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto;
-            display: grid;
-            place-items: center;
-            position: relative;
-            box-shadow: 0 22px 60px rgba(18, 10, 44, 0.2);
-        }
-
-        .founder-portrait::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.25;
-            mix-blend-mode: soft-light;
-            border-radius: 50%;
-        }
-
-        .founder-portrait svg {
-            width: 140px;
-            height: 140px;
-            opacity: 0.8;
-        }
-            position: relative;
-            z-index: 1;
-            text-align: left;
-        }
-
-        .hero-copy h1 {
-            font-family: 'Futura', 'Futura PT', 'Avenir Next', sans-serif;
-            font-size: clamp(4.8rem, 9vw, 8.6rem);
-            line-height: 0.88;
-            margin: 0;
-            letter-spacing: -0.04em;
-            color: rgba(13, 12, 34, 0.92);
-        }
-
-        .hero-copy p {
-            font-size: clamp(1.2rem, 1.8vw, 1.6rem);
-            margin: 24px 0 46px;
-            max-width: 520px;
-            color: rgba(13, 12, 34, 0.78);
-        }
-
-        .cta-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .cta-group a {
-            text-decoration: none;
-            padding: 18px 40px;
-            border-radius: 999px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: transform 200ms ease, box-shadow 200ms ease;
-        }
-
-        .cta-primary {
-            background: var(--ink);
-            color: var(--petal);
-            box-shadow: 0 12px 34px rgba(0, 0, 0, 0.25);
-        }
-
-        .cta-secondary {
-            border: 1px solid rgba(13, 12, 34, 0.32);
-            color: var(--ink);
-            backdrop-filter: blur(10px);
-        }
-
-        .cta-group a:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
-        }
-
-        .hero-visual {
-            display: none;
-        }
-
-        .halo {
-            position: absolute;
-            inset: -220px -160px auto auto;
-            width: 560px;
-            height: 560px;
-            background: radial-gradient(circle, rgba(255, 182, 193, 0.4) 0%, rgba(241, 243, 255, 0) 70%);
-            filter: blur(24px);
-            opacity: 0.7;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .halo::after {
+        .legacy-halo::after {
             content: '';
             position: absolute;
             inset: -20%;
-            background-image: var(--grain);
+            background-image: var(--legacy-grain);
             mix-blend-mode: soft-light;
-            opacity: 0.5;
+            opacity: 0.45;
         }
 
-        .section {
+        .legacy-hero-inner {
             position: relative;
-            padding: 140px 0;
-        }
-
-        .panel {
-            width: var(--max-width);
-            margin: 0 auto;
-            background: var(--petal);
-            color: var(--ink);
-            border-radius: 40px;
-            padding: 76px;
-            box-shadow: 0 30px 100px rgba(5, 1, 18, 0.25);
-        }
-
-        .with-grain {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .with-grain::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: soft-light;
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .with-grain > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .panel h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 4vw, 4rem);
-            margin: 0 0 32px;
-        }
-
-        .panel p {
-            font-size: 1.18rem;
-            max-width: 640px;
-            line-height: 1.55;
-            color: rgba(13, 12, 34, 0.8);
-        }
-
-        .pill-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-            margin-top: 48px;
-        }
-
-        .pill {
-            border-radius: 999px;
-            padding: 22px 28px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            background: var(--ink);
-            color: var(--petal);
-            text-align: center;
-        }
-
-        .section-tones {
-            background: var(--limoncello);
-        }
-
-        .section-tones .panel {
-            background: transparent;
-            box-shadow: none;
-            padding: 0;
-            max-width: 760px;
-            color: rgba(13, 12, 34, 0.82);
-        }
-
-        .tones-grid {
-            margin-top: 48px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 22px;
-        }
-
-        .tone-tile {
-            border-radius: 28px;
-            padding: 34px 28px;
-            background: rgba(255, 255, 255, 0.6);
-            color: var(--ink);
-            border: 1px solid rgba(13, 12, 34, 0.08);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .tone-tile span {
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-size: 0.82rem;
-            opacity: 0.7;
-        }
-
-        .tone-tile strong {
-            font-size: 1.4rem;
-        }
-
-        .section-scenes {
-            background: var(--seafoam);
-        }
-
-        .scene-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-top: 56px;
-        }
-
-        .scene-card {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 32px;
-            padding: 32px;
-            color: var(--ink);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-        }
-
-        .scene-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: soft-light;
-            opacity: 0.35;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .scene-card h3 {
-            font-size: 1.6rem;
-            margin: 0 0 18px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .scene-card p {
-            margin: 0;
-            line-height: 1.55;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-studio {
-            background: var(--pistachio);
-        }
-
-        .studio-inner {
-            width: var(--max-width);
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 36px;
-            align-items: start;
-        }
-
-        .studio-copy h2 {
-            margin: 0 0 24px;
-            font-size: clamp(2.4rem, 3.2vw, 3.6rem);
-            color: rgba(13, 12, 34, 0.92);
-        }
-
-        .studio-copy p {
-            margin: 0 0 20px;
-            line-height: 1.6;
-            color: rgba(13, 12, 34, 0.78);
-        }
-
-        .studio-list {
-            list-style: none;
-            padding: 0;
-            margin: 32px 0 0;
-            display: grid;
-            gap: 16px;
-        }
-
-        .studio-list li {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 22px;
-            padding: 18px 22px;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-size: 0.88rem;
-            color: rgba(13, 12, 34, 0.8);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .studio-list li::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: soft-light;
-            opacity: 0.4;
-        }
-
-        .studio-card {
-            background: rgba(255, 255, 255, 0.72);
-            border-radius: 36px;
-            padding: 34px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-        }
-
-        .studio-card strong {
-            font-size: 2rem;
-            color: rgba(13, 12, 34, 0.86);
-            position: relative;
-            z-index: 1;
-        }
-
-        .studio-card p {
-            margin: 0;
-            line-height: 1.55;
-            color: rgba(13, 12, 34, 0.72);
-            position: relative;
-            z-index: 1;
-        }
-
-        .studio-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: soft-light;
-            opacity: 0.4;
-        }
-
-        .section-flow {
-            background: var(--pearl);
-        }
-
-        .flow-grid {
-            width: var(--max-width);
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-        }
-
-        .flow-card {
-            background: white;
-            border-radius: 32px;
-            padding: 32px;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-            color: rgba(13, 12, 34, 0.82);
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .flow-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: soft-light;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-
-        .flow-card svg {
-            width: 48px;
-            height: 48px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .flow-card h3,
-        .flow-card p {
-            position: relative;
-            z-index: 1;
-            margin: 0;
-        }
-
-        .flow-card h3 {
-            font-size: 1.45rem;
-            color: rgba(13, 12, 34, 0.9);
-        }
-
-        .flow-card p {
-            line-height: 1.55;
-        }
-
-        .section-devices {
-            background: var(--lavender);
-        }
-
-        .device-stage {
-            width: var(--max-width);
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 32px;
-            align-items: center;
-        }
-
-        .device-copy h2 {
-            margin: 0 0 20px;
-            font-size: clamp(2.4rem, 3.2vw, 3.6rem);
-            color: rgba(13, 12, 34, 0.92);
-        }
-
-        .device-copy p {
-            margin: 0 0 20px;
-            line-height: 1.6;
-            color: rgba(13, 12, 34, 0.78);
-        }
-
-        .device-mosaic {
-            display: grid;
-            gap: 20px;
-        }
-
-        .device-frame {
-            background: var(--midnight);
-            border-radius: 36px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(18, 10, 44, 0.25);
-        }
-
-        .device-frame::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.35;
-            mix-blend-mode: soft-light;
-            pointer-events: none;
-        }
-
-        .device-frame svg {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 24px;
-        }
-
-        .device-frame img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .device-tag {
-            position: absolute;
-            top: 22px;
-            left: 24px;
-            background: rgba(255, 255, 255, 0.14);
-            color: rgba(255, 255, 255, 0.86);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .membership-panel {
-            width: var(--max-width);
-            margin: 0 auto;
-            background: white;
-            color: rgba(13, 12, 34, 0.86);
-            border-radius: 36px;
-            padding: 60px;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-            box-shadow: 0 30px 100px rgba(18, 10, 44, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .membership-panel::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            opacity: 0.35;
-            mix-blend-mode: soft-light;
-            pointer-events: none;
-        }
-
-        .membership-panel h2 {
-            margin: 0 0 18px;
-        }
-
-        .membership-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            position: relative;
-            z-index: 1;
-            margin-top: 40px;
-        }
-
-        .membership-card {
-            background: rgba(239, 231, 255, 0.6);
-            border-radius: 24px;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            border: 1px solid rgba(13, 12, 34, 0.08);
-        }
-
-        .membership-card strong {
-            font-size: 2.2rem;
-        }
-
-        .membership-card span {
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        .membership-card p {
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        .stories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin-top: 56px;
-        }
-
-        .story {
-            background: rgba(13, 12, 34, 0.86);
-            color: white;
-            border-radius: 30px;
-            padding: 34px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .story::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: var(--grain);
-            mix-blend-mode: soft-light;
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .story::after {
-            content: '';
-            position: absolute;
-            inset: auto -40px -80px -40px;
-            height: 180px;
-            background: var(--aura-gradient);
-            opacity: 0.4;
-            filter: blur(40px);
-            z-index: 0;
-        }
-
-        .story p {
-            position: relative;
-            margin: 0;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            z-index: 1;
-        }
-
-        .story span {
-            position: relative;
-            display: block;
-            margin-top: 24px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            opacity: 0.8;
-            z-index: 1;
-        }
-
-        footer {
-            padding: 80px 0;
-            background: black;
-            color: rgba(239, 231, 255, 0.86);
-        }
-
-        footer .footer-inner {
-            width: var(--max-width);
+            z-index: 2;
+            width: min(1100px, 92vw);
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 40px;
         }
 
-        footer .footer-headline {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 3vw, 3rem);
-            letter-spacing: -0.01em;
+        .legacy-hero-copy h1 {
+            font-family: 'Space Grotesk', 'Manrope', 'Inter', sans-serif;
+            font-size: clamp(4rem, 8vw, 7.2rem);
+            letter-spacing: -0.04em;
             margin: 0;
+            line-height: 0.95;
+            color: rgba(13, 12, 34, 0.92);
         }
 
-        footer .footer-actions {
+        .legacy-hero-copy p {
+            margin: 24px 0 44px;
+            max-width: 520px;
+            font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+            line-height: 1.6;
+            color: var(--legacy-ink-muted);
+        }
+
+        .legacy-cta-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
+            gap: 16px;
         }
 
-        footer .footer-actions a {
+        .legacy-cta {
             text-decoration: none;
-            color: #0d0c22;
-            background: var(--petal);
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            padding: 16px 32px;
+            padding: 18px 40px;
             border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
+            transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
         }
 
-        footer .footer-meta {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.9rem;
-            opacity: 0.85;
+        .legacy-cta-primary {
+            background: var(--legacy-ink);
+            color: var(--legacy-petal);
+            box-shadow: 0 12px 34px rgba(0, 0, 0, 0.25);
+        }
+
+        .legacy-cta-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
+        }
+
+        .legacy-cta-secondary {
+            border: 1px solid rgba(13, 12, 34, 0.28);
+            color: var(--legacy-ink);
+            backdrop-filter: blur(10px);
+        }
+
+        .legacy-cta-secondary:hover {
+            transform: translateY(-4px);
+            background: rgba(13, 12, 34, 0.08);
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
         }
 
         @media (max-width: 720px) {
-            header {
-                padding-bottom: 80px;
+            .legacy-hero {
+                margin-top: 4.5rem;
+                padding: 80px 0 100px;
             }
 
-            .panel {
-                padding: 56px 32px;
-            }
-
-            .cta-group {
+            .legacy-cta-group {
                 flex-direction: column;
-            }
-
-            .membership-panel {
-                padding: 40px 28px;
-            }
-
-            .flow-grid,
-            .device-stage,
-            .membership-grid,
-            .preview-stage,
-            .founder-inner {
-                grid-template-columns: 1fr;
-            }
-
-            .founder-portrait {
-                width: 180px;
-                height: 180px;
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.6/bundled/lenis.min.js" defer></script>
 </head>
-<body>
-    <div class="halo" aria-hidden="true"></div>
-    <header>
-        <nav>
-            <div class="logo">Thinks.</div>
-            <div class="nav-actions">
-                <a href="#join">Request Access</a>
-            </div>
-        </nav>
-        <section class="hero">
-            <div class="hero-copy">
-                <h1>Private evolution, pastel serenity.</h1>
-                <p>
-                    Thinks. is your Italian-summer sanctuary for spiritual refinement. Minimal interface, hypnotic palettes, and rituals designed to let you linger in self-trust.
-                </p>
-                <div class="cta-group">
-                    <a class="cta-primary" href="#join">Join the waitlist</a>
-                    <a class="cta-secondary" href="#vision">See the vision</a>
+<body class="min-h-screen bg-deep-void text-slate-100 antialiased selection:bg-ember/40 selection:text-ink relative overflow-x-hidden">
+    <div class="grain-overlay" aria-hidden="true"></div>
+    <div class="pointer-events-none fixed inset-0 bg-gradient-to-br from-amber-300/10 via-purple-500/10 to-sky-400/5 blur-3xl" aria-hidden="true"></div>
+    <div class="relative z-10">
+        <header class="relative isolate overflow-hidden pb-32 pt-10 sm:pb-36 lg:pb-40">
+            <div class="parallax-layer absolute inset-x-0 top-[-35%] h-[420px] rounded-full bg-gradient-to-br from-[#ffe8d0]/55 via-[#ffd7ef]/40 to-[#c7f5f1]/45 blur-3xl opacity-80" aria-hidden="true" data-parallax-speed="-0.12"></div>
+            <nav class="nav-ambient relative z-20 mx-auto flex w-[92vw] max-w-6xl items-center justify-between rounded-full border border-white/10 bg-white/5 px-6 py-4 backdrop-blur-xl" data-nav>
+                <a href="#" class="flex items-center gap-2 font-display text-xl uppercase tracking-[0.28em] text-petal">Thinks.</a>
+                <div class="hidden items-center gap-8 text-sm font-medium text-white/80 sm:flex">
+                    <a href="#vision" class="hover:text-white">Vision</a>
+                    <a href="#experience" class="hover:text-white">Experience</a>
+                    <a href="#membership" class="hover:text-white">Membership</a>
+                    <a href="#faq" class="hover:text-white">FAQs</a>
                 </div>
-            </div>
-        </section>
-    </header>
-
-    <main>
-        <section class="section section-preview" aria-label="Interface preview">
-            <div class="preview-stage">
-                <div class="preview-copy">
-                    <h2>See the sanctuary in motion.</h2>
-                    <p>
-                        The Thinks. interface feels like walking into a pastel chapel—open, precise, and soul-soothing. Every screen is crafted to focus your energy on the ritual ahead.
-                    </p>
-                    <p>
-                        We paired typography with soft Italian summer tones, then added breathing room that invites you to slow down.
-                    </p>
-                </div>
-                <div class="preview-visual">
-                    <img src="https://dummyimage.com/900x520/efe7ff/0d0c22.png&text=Thinks.+Preview" alt="Screenshot collage of the Thinks app interface with pastel gradients" loading="lazy">
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="vision">
-            <div class="panel">
-                <h2>Colorful calm engineered for brave reflection.</h2>
-                <p>
-                    Thinks. is crafted like a private Apple keynote for your inner life—minimal, cinematic, and gorgeously saturated. Every interaction is designed to anchor you in the present moment while gently nudging you toward the person you are becoming.
-                </p>
-                <div class="pill-grid">
-                    <div class="pill">Guided journeys</div>
-                    <div class="pill">Live rituals</div>
-                    <div class="pill">Aura analytics</div>
-                    <div class="pill">Sonic breathing</div>
-                    <div class="pill">Memory blossoms</div>
-                    <div class="pill">Private community</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section-tones">
-            <div class="panel">
-                <h2>The palette of presence.</h2>
-                <p>
-                    We tuned Thinks. to the soft vibrancy of Amalfi mornings so every ritual feels like stepping into sunlight. Calm pastels, gentle contrasts, and whisper-light typography invite you to keep breathing.
-                </p>
-                <div class="tones-grid">
-                    <div class="tone-tile">
-                        <span>Morning ritual</span>
-                        <strong>Limoncello Dawn</strong>
-                        <p>Warm gold that cues gratitude journaling and gentle wake-up breaths.</p>
-                    </div>
-                    <div class="tone-tile">
-                        <span>Afternoon reset</span>
-                        <strong>Seafoam Clarity</strong>
-                        <p>Softer turquoise designed to reset your energy between commitments.</p>
-                    </div>
-                    <div class="tone-tile">
-                        <span>Evening unwind</span>
-                        <strong>Pistachio Still</strong>
-                        <p>A hush of green to close loops, forgive yourself, and initiate rest.</p>
-                    </div>
-                    <div class="tone-tile">
-                        <span>Weekly summit</span>
-                        <strong>Rose Quartz Glow</strong>
-                        <p>Pastel rose honoring milestones, reflections, and the week’s evolution.</p>
+                <a href="#join" class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-xs font-semibold uppercase tracking-[0.32em] text-white transition hover:border-white/40 hover:bg-white/20">Request Access</a>
+            </nav>
+            <section class="legacy-hero" aria-labelledby="legacy-hero-heading">
+                <div class="legacy-halo parallax-layer" aria-hidden="true" data-parallax-speed="-0.08"></div>
+                <div class="legacy-hero-inner">
+                    <div class="legacy-hero-copy">
+                        <h1 id="legacy-hero-heading">Private evolution, pastel serenity.</h1>
+                        <p>
+                            Thinks. is your Italian-summer sanctuary for spiritual refinement. Minimal interface, hypnotic palettes, and rituals designed to let you linger in self-trust.
+                        </p>
+                        <div class="legacy-cta-group">
+                            <a class="legacy-cta legacy-cta-primary" href="#join">Join the waitlist</a>
+                            <a class="legacy-cta legacy-cta-secondary" href="#vision">See the vision</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="section section-scenes">
-            <div class="panel" style="background: transparent; box-shadow: none; color: rgba(13, 12, 34, 0.84);">
-                <h2>Scenes from inside the sanctuary.</h2>
-                <p>
-                    Your space stays private, yet the experience feels like an atelier devoted to your inner world. These are the rituals members cycle through as they elevate.
-                </p>
-                <div class="scene-grid">
-                    <div class="scene-card">
-                        <h3>Reflection Canvases</h3>
-                        <p>Guided prompts unfold across generous, pastel canvases that respond to your tone—calming hues if you’re moving through resistance, brighter paths when momentum returns.</p>
+            </section>
+            <section class="relative mx-auto mt-16 grid max-w-6xl gap-16 px-6 lg:mt-20 lg:grid-cols-[1.05fr_0.95fr] xl:px-0">
+                <div class="space-y-10">
+                    <div class="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.32em] text-white/80">
+                        <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
+                        Private beta open
                     </div>
-                    <div class="scene-card">
-                        <h3>Breath-led Audio</h3>
-                        <p>Oceanic soundscapes, narrated by luminous mentors, help you dissolve tension. Visual breath guides glow softly so you stay anchored without distraction.</p>
+                    <div class="space-y-6">
+                        <h1 class="font-display text-5xl leading-[1.05] text-white sm:text-6xl lg:text-7xl">Private evolution. Pastel serenity.</h1>
+                        <p class="max-w-xl text-lg leading-relaxed text-white/70 sm:text-xl">
+                            Thinks. is a cinematic ritual studio for conscious builders. Drift into Italian-summer gradients, intelligent breathwork, and reflections that respect your privacy as much as your pace.
+                        </p>
                     </div>
-                    <div class="scene-card">
-                        <h3>Intention Timelines</h3>
-                        <p>See intentions bloom on a delicate timeline—color-coded to your energy spectrum, annotated with the micro-victories you decide to archive.</p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#join" class="inline-flex items-center justify-center rounded-full bg-sorbet/90 px-8 py-3 text-sm font-semibold uppercase tracking-[0.32em] text-ink shadow-card transition hover:-translate-y-1 hover:bg-sorbet hover:shadow-halo">Join the waitlist</a>
+                        <a href="#experience" class="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-3 text-sm font-semibold uppercase tracking-[0.32em] text-white/80 transition hover:border-white/40 hover:bg-white/12 hover:text-white">See the experience</a>
+                    </div>
+                    <div class="grid gap-6 sm:grid-cols-3">
+                        <div class="space-y-2 rounded-2xl border border-white/10 bg-gradient-to-br from-sorbet/25 via-white/10 to-seafoam/30 p-4">
+                            <p class="text-3xl font-semibold text-white">90</p>
+                            <p class="text-xs uppercase tracking-[0.28em] text-white/70">Days of guided ritual arcs</p>
+                        </div>
+                        <div class="space-y-2 rounded-2xl border border-white/10 bg-gradient-to-br from-limoncello/25 via-white/10 to-lavender/30 p-4">
+                            <p class="text-3xl font-semibold text-white">Encrypted</p>
+                            <p class="text-xs uppercase tracking-[0.28em] text-white/70">Aura analytics stay on-device</p>
+                        </div>
+                        <div class="space-y-2 rounded-2xl border border-white/10 bg-gradient-to-br from-marina/25 via-white/10 to-pistachio/30 p-4">
+                            <p class="text-3xl font-semibold text-white">Synced</p>
+                            <p class="text-xs uppercase tracking-[0.28em] text-white/70">iPhone · iPad · Mirror displays</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="section section-studio">
-            <div class="studio-inner">
-                <div class="studio-copy">
-                    <h2>The Thinks. private studio.</h2>
-                    <p>
-                        We design for depth, not dopamine. Sessions adapt to your pacing, honoring the seasons of your spirit. Every layer of data is encrypted, surfaced only when it serves your growth.
-                    </p>
-                    <p>
-                        Behind the scenes, a mindful intelligence calibrates rituals so you never feel rushed. Colors, prompts, breath, and sound harmonize to your lived experience.
-                    </p>
-                    <ul class="studio-list">
-                        <li>Ritual engines curated by spiritual researchers</li>
-                        <li>Zero ads, zero feeds, zero pressure</li>
-                        <li>Encrypted sync between phone, tablet, and mirror displays</li>
-                        <li>Optional private mentor sessions within the app</li>
-                    </ul>
-                </div>
-                <div class="studio-card">
-                    <strong>“You sense an invisible team fixing the lighting around your soul.”</strong>
-                    <p>
-                        Thinks. members describe the studio as their favorite hideaway—a place where metrics feel poetic and even analytics are painted in color therapy.
-                    </p>
-                    <p>
-                        Request an invite to explore early access cohorts and seasonal salons hosted by the founding team.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section-flow" aria-label="Daily flow">
-            <div class="panel" style="background: transparent; box-shadow: none; color: rgba(13, 12, 34, 0.84);">
-                <h2>Daily flow, gracefully structured.</h2>
-                <p>
-                    Thinks. arranges your day like a conductor—soft cues in the morning, centered check-ins at noon, reflective membranes by night. Every step carries a visual tempo so you know how to feel before you think.
-                </p>
-                <div class="flow-grid">
-                    <article class="flow-card">
-                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
-                            <defs>
-                                <linearGradient id="gradient-awaken" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffb48b" />
-                                    <stop offset="100%" stop-color="#ffd1e6" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#gradient-awaken)" />
-                            <circle cx="32" cy="32" r="12" fill="rgba(255,255,255,0.85)" />
-                        </svg>
-                        <h3>Awaken Ritual</h3>
-                        <p>Receive a five-minute, pastel-lit walkthrough that centers gratitude, breath, and the intention you choose while the sun rises.</p>
-                    </article>
-                    <article class="flow-card">
-                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
-                            <defs>
-                                <linearGradient id="gradient-attune" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#d1f7ff" />
-                                    <stop offset="100%" stop-color="#b0e2ff" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#gradient-attune)" />
-                            <path d="M16 40 L26 28 L34 36 L48 22" stroke="#0d0c22" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85" />
-                        </svg>
-                        <h3>Attune Midday</h3>
-                        <p>Check-in prompts and biofeedback cues keep you aligned without dragging you into data overload—just the signals that matter.</p>
-                    </article>
-                    <article class="flow-card">
-                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
-                            <defs>
-                                <linearGradient id="gradient-release" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#c4f0d7" />
-                                    <stop offset="100%" stop-color="#a6e0ff" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#gradient-release)" />
-                            <path d="M20 24 C20 20 24 18 28 20 C30 21 34 21 36 20 C40 18 44 20 44 24 V44 H20 Z" fill="rgba(255,255,255,0.85)" />
-                        </svg>
-                        <h3>Release Twilight</h3>
-                        <p>Evening reflections dissolve tension with sound therapy and visual breathing loops that guide you gently into rest.</p>
-                    </article>
-                    <article class="flow-card">
-                        <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
-                            <defs>
-                                <linearGradient id="gradient-summit" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#f7e5ff" />
-                                    <stop offset="100%" stop-color="#ffe6b5" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="6" y="10" width="52" height="44" rx="16" fill="url(#gradient-summit)" />
-                            <path d="M18 40 L28 26 L34 34 L46 20" stroke="#0d0c22" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8" />
-                            <circle cx="46" cy="20" r="6" fill="rgba(13,12,34,0.85)" />
-                        </svg>
-                        <h3>Sunday Summit</h3>
-                        <p>Weekly cinematic recap surfaces the patterns you want to keep and suggests rituals for the coming chapter.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section-devices" aria-label="Device experiences">
-            <div class="device-stage">
-                <div class="device-copy">
-                    <h2>Beautiful on every luminous surface.</h2>
-                    <p>
-                        Designed for iPhone, iPad, and ambient displays. Thinks. adapts to your light and space—whether you journal in a sunlit studio or meditate by moonlight.
-                    </p>
-                    <p>
-                        Mockups showcase the pastel interface palette, typographic elegance, and the way gradients subtly shift as your state evolves.
-                    </p>
-                </div>
-                <div class="device-mosaic">
-                    <figure class="device-frame">
-                        <span class="device-tag">iPhone</span>
-                        <svg viewBox="0 0 360 720" role="img" aria-labelledby="iphone-mockup-title">
-                            <title id="iphone-mockup-title">Thinks iPhone interface mockup</title>
-                            <defs>
-                                <linearGradient id="iphone-body" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#fdf1ec" />
-                                    <stop offset="100%" stop-color="#f2f5ff" />
-                                </linearGradient>
-                                <linearGradient id="iphone-card" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#ffe7d6" />
-                                    <stop offset="100%" stop-color="#ffd0f0" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="8" y="8" width="344" height="704" rx="46" fill="url(#iphone-body)" />
-                            <rect x="58" y="120" width="244" height="320" rx="34" fill="url(#iphone-card)" />
-                            <rect x="58" y="470" width="244" height="120" rx="24" fill="#f3f5ff" opacity="0.85" />
-                            <rect x="118" y="52" width="124" height="12" rx="6" fill="#d8d6f6" />
-                            <circle cx="180" cy="622" r="52" fill="#0d0c22" opacity="0.78" />
-                        </svg>
+                <div class="relative tilt-scene">
+                    <div class="parallax-layer absolute -left-24 top-24 hidden h-72 w-72 rounded-full bg-gradient-to-br from-[#ffe6d9]/40 via-[#ffe0f4]/28 to-[#c9f6f1]/30 blur-3xl sm:block" aria-hidden="true" data-parallax-speed="0.18"></div>
+                    <figure class="tilt-card relative aspect-[10/13] w-full overflow-hidden rounded-[38px] border border-white/10 bg-gradient-to-br from-[#fff2e3]/35 via-[#f5f0ff]/30 to-[#e9fff7]/40 shadow-card" data-tilt>
+                        <div class="three-stage" aria-hidden="true">
+                            <canvas id="aurora-globe"></canvas>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" alt="Thinks interface mockup showcasing pastel gradients" class="h-full w-full object-cover mix-blend-luminosity" loading="lazy">
+                        <figcaption class="absolute inset-x-6 bottom-6 rounded-3xl border border-white/20 bg-white/80 p-4 text-sm text-ink shadow-lg">
+                            <p class="font-semibold uppercase tracking-[0.28em] text-xs text-ink/70">Live Ritual · Sorrento Pulse</p>
+                            <p class="mt-1 text-sm text-ink/80">Sonic breathwork adapts to the tone of your nightly reflection.</p>
+                        </figcaption>
                     </figure>
-                    <figure class="device-frame">
-                        <span class="device-tag">Mirror Display</span>
-                        <svg viewBox="0 0 540 360" role="img" aria-labelledby="mirror-mockup-title">
-                            <title id="mirror-mockup-title">Thinks ambient display mockup</title>
-                            <defs>
-                                <linearGradient id="mirror-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#dff7ff" />
-                                    <stop offset="50%" stop-color="#f1efff" />
-                                    <stop offset="100%" stop-color="#ffe9f4" />
-                                </linearGradient>
-                            </defs>
-                            <rect x="10" y="10" width="520" height="340" rx="38" fill="url(#mirror-gradient)" />
-                            <rect x="50" y="70" width="440" height="156" rx="28" fill="rgba(13,12,34,0.12)" />
-                            <rect x="50" y="250" width="440" height="70" rx="18" fill="rgba(13,12,34,0.08)" />
-                            <circle cx="470" cy="120" r="26" fill="#0d0c22" opacity="0.7" />
-                            <circle cx="420" cy="120" r="14" fill="#0d0c22" opacity="0.5" />
-                        </svg>
-                    </figure>
-                    <figure class="device-frame">
-                        <span class="device-tag">iPad</span>
-                        <img src="https://dummyimage.com/1024x768/dff7ff/0d0c22.png&text=Thinks.+iPad" alt="Thinks iPad dashboard mockup" loading="lazy">
-                    </figure>
+                        <div class="parallax-layer absolute -right-10 top-8 w-48 rounded-3xl border border-white/10 bg-gradient-to-br from-white/20 via-white/10 to-seafoam/20 p-4 backdrop-blur-xl" data-parallax-speed="0.25">
+                        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">Today’s palette</p>
+                        <div class="mt-3 flex flex-col gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="h-8 w-8 rounded-full bg-[#f8deeb]"></span>
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.28em] text-white/60">Morning</p>
+                                    <p class="text-sm text-white/80">Rose Quartz Glow</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="h-8 w-8 rounded-full bg-[#d6f5ed]"></span>
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.28em] text-white/60">Midday</p>
+                                    <p class="text-sm text-white/80">Seafoam Clarity</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </header>
 
-        <section class="section" aria-label="Membership">
-            <div class="membership-panel">
-                <h2>Membership designed for devotion.</h2>
-                <p>
-                    We release Thinks. invites in slow waves to protect intimacy. Each tier is priced the same—it’s about how deep you want to go, not how much you can pay.
-                </p>
-                <div class="membership-grid">
-                    <div class="membership-card">
-                        <span>01</span>
-                        <strong>Solos</strong>
-                        <p>Access daily rituals, guided reflections, and your personal aura analytics. Perfect for founders, artists, and seekers building private practice.</p>
+        <main class="space-y-28 pb-32 sm:space-y-36 sm:pb-40">
+            <section id="vision" class="relative isolation py-24 sm:py-32">
+                <div class="parallax-layer absolute inset-0 -z-10 bg-gradient-to-b from-white/4 via-transparent to-transparent" aria-hidden="true" data-parallax-speed="-0.05"></div>
+                <div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[0.85fr_1.15fr] xl:px-0">
+                    <div class="space-y-6">
+                        <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Why Thinks</span>
+                        <h2 class="font-display text-4xl text-white sm:text-5xl">Colorful calm engineered for brave reflection.</h2>
+                        <p class="text-lg leading-relaxed text-white/70">
+                            We craft every ritual like an Apple keynote for your inner life. Precise typography, cinematic motion, and soulful sound design invite you to linger inside your own evolution.
+                        </p>
+                        <a href="#experience" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.28em] text-petal transition hover:text-white">
+                            Explore the sanctuary
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M13 5l7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
-                    <div class="membership-card">
-                        <span>02</span>
-                        <strong>Circles</strong>
-                        <p>Create a private cohort with trusted friends or partners. Share collective rituals while keeping journals encrypted and personal.</p>
-                    </div>
-                    <div class="membership-card">
-                        <span>03</span>
-                        <strong>Salons</strong>
-                        <p>Seasonal access to live salons with the founding team and invited mystics. Includes custom color therapy and mirror display scenes.</p>
+                    <div class="tilt-scene grid gap-6 md:grid-cols-2">
+                        <article class="tilt-card rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-sorbet/15 p-6 backdrop-blur-xl" data-tilt>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-petal">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 3a1 1 0 0 1 .894.553l1.382 2.764 3.05.443a1 1 0 0 1 .554 1.706l-2.205 2.149.521 3.037a1 1 0 0 1-1.451 1.054L12 13.347l-2.741 1.439a1 1 0 0 1-1.451-1.054l.521-3.037-2.205-2.149a1 1 0 0 1 .554-1.706l3.05-.443L11.106 3.553A1 1 0 0 1 12 3Z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-5 font-display text-2xl text-white">Guided Journeys</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-white/70">
+                                Sequenced rituals stretch across 30 and 90-day arcs, adapting to your tone, tempo, and intentional goals. Every prompt is co-authored with spiritual researchers.
+                            </p>
+                        </article>
+                        <article class="tilt-card rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-limoncello/15 p-6 backdrop-blur-xl" data-tilt>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-petal">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.25 4.5A2.25 2.25 0 0 1 7.5 2.25h9a2.25 2.25 0 0 1 2.25 2.25v15a.75.75 0 0 1-1.137.64L12 15.28l-5.613 3.86A.75.75 0 0 1 5.25 19.5v-15Z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-5 font-display text-2xl text-white">Live Ritual Salons</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-white/70">
+                                Drop into private salons with the founding team. Mirror displays, breath-led audio, and mentor Q&As deliver a quietly cinematic group experience.
+                            </p>
+                        </article>
+                        <article class="tilt-card rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-seafoam/12 p-6 backdrop-blur-xl" data-tilt>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-petal">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M11.47 3.194a.75.75 0 0 1 1.06 0l8.25 8.25a.75.75 0 0 1-1.06 1.06L18 10.812V19.5a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1-.75-.75v-3.75h-3v3.75a.75.75 0 0 1-.75.75h-3A.75.75 0 0 1 6 19.5v-8.688L3.28 12.504a.75.75 0 1 1-1.06-1.06l8.25-8.25Z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-5 font-display text-2xl text-white">Sanctuary Spaces</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-white/70">
+                                Curate your own studio at home. Thinks. syncs with ambient lighting, spatial audio, and minimal hardware so every room carries reverent calm.
+                            </p>
+                        </article>
+                        <article class="tilt-card rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl" data-tilt>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-petal">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 3a9 9 0 0 0-4.472 16.741c.353.17.78.013.852-.375a9.047 9.047 0 0 1 1.97-4.053.75.75 0 0 0-.126-1.058 2.25 2.25 0 1 1 3.607-1.742c0 .702-.318 1.33-.82 1.748a.75.75 0 0 0-.111 1.046 9.04 9.04 0 0 1 1.906 4.097c.071.387.496.543.85.373A9 9 0 0 0 12 3Z" />
+                                </svg>
+                            </div>
+                            <h3 class="mt-5 font-display text-2xl text-white">Aura Analytics</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-white/70">
+                                Biometric cues and journaling tone become luminous dashboards only you can unlock. No social feeds, no dopamine traps—just insight in color.
+                            </p>
+                        </article>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="section section-press" aria-label="Press">
-            <div class="press-inner">
-                <h2 class="press-headline">Early whispers from those who experienced Thinks.</h2>
-                <div class="press-logos">
-                    <span>Monocle</span>
-                    <span>Kinfolk</span>
-                    <span>Wallpaper*</span>
-                    <span>Cool Hunting</span>
-                </div>
-                <div class="press-grid">
-                    <article class="press-card">
-                        <p>“Thinks. renders inner work with the polish of a luxury product reveal. It feels like mindfulness imagined by an architect.”</p>
-                        <span>MONOCLE FUTURES</span>
-                    </article>
-                    <article class="press-card">
-                        <p>“A sanctuary of color and sound that respects quiet. Finally, a spiritual tool that doesn’t shout for your attention.”</p>
-                        <span>KINFOLK</span>
-                    </article>
-                    <article class="press-card">
-                        <p>“The pastel interface flows like a seafront sunrise in Positano—calm, intentional, unforgettable.”</p>
-                        <span>WALLPAPER*</span>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section-faq" aria-label="Frequently asked questions">
-            <div class="faq-wrapper">
-                <h2>Questions before you step inside?</h2>
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <h3>Is Thinks. a social network?</h3>
-                        <p>No feeds, no likes, no algorithmic nudges. Thinks. is a private studio. You can invite a circle, but you always decide what’s shared.</p>
+            <section id="experience" class="relative overflow-hidden py-24 sm:py-32">
+                <div class="parallax-layer absolute inset-0 -z-10 bg-gradient-to-br from-[#1d1238]/60 to-[#0a0620]" aria-hidden="true" data-parallax-speed="-0.03"></div>
+                <div class="parallax-layer absolute right-[-20%] top-[30%] h-72 w-72 rounded-full bg-gradient-to-br from-[#ffe7f5]/40 via-[#cbe8ff]/30 to-[#bff6e0]/30 blur-3xl" aria-hidden="true" data-parallax-speed="0.16"></div>
+                <div class="mx-auto flex w-[92vw] max-w-6xl flex-col gap-16 px-6 xl:px-0">
+                    <div class="max-w-2xl space-y-6">
+                        <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Inside the studio</span>
+                        <h2 class="font-display text-4xl text-white sm:text-5xl">Scenes from a pastel sanctuary.</h2>
+                        <p class="text-lg leading-relaxed text-white/70">
+                            Glide between reflection canvases, sonic breathwork, and intention timelines. Thinks. uses motion, typography, and light to choreograph your nervous system into presence.
+                        </p>
                     </div>
-                    <div class="faq-item">
-                        <h3>How does the app adapt to me?</h3>
-                        <p>We analyze tone, pacing, and ritual completion using on-device intelligence. Insights stay encrypted and surface as gentle recommendations.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h3>Can I import my existing practices?</h3>
-                        <p>Yes. Import meditations, breath exercises, or journal prompts and our ritual engine redesigns them with Thinks.’ color language.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h3>What devices are supported?</h3>
-                        <p>iPhone and iPad at launch, with optional mirror display and Apple TV scenes for your meditation space.</p>
+                    <div class="tilt-scene grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                        <figure class="tilt-card relative overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-br from-white/14 via-white/8 to-sorbet/18 p-6 backdrop-blur-xl" data-tilt>
+                            <video class="aspect-[3/4] w-full rounded-[28px] object-cover shadow-card" autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80">
+                                <source src="https://cdn.coverr.co/videos/mp4/coverr-hypnotic-ink-1622712792208.mp4" type="video/mp4">
+                            </video>
+                            <figcaption class="mt-6 space-y-2 text-sm text-white/70">
+                                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Reflection canvases</p>
+                                <p>Prompts expand across responsive canvases that shift palettes with your tone—softer when you need calm, brighter when momentum returns.</p>
+                            </figcaption>
+                        </figure>
+                        <div class="tilt-scene grid gap-8">
+                            <figure class="tilt-card relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-white/14 via-white/6 to-seafoam/16 p-6 backdrop-blur-xl" data-tilt>
+                                <img src="https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1000&q=80" alt="Breath-led audio ritual with pastel gradients" class="aspect-[16/11] w-full rounded-[24px] object-cover shadow-card" loading="lazy">
+                                <figcaption class="mt-4 space-y-2 text-sm text-white/70">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Breath-led audio</p>
+                                    <p>Oceanic soundscapes and luminous mentors guide every inhale, while visual breath loops glow softly to anchor nervous systems.</p>
+                                </figcaption>
+                            </figure>
+                            <figure class="tilt-card relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-white/14 via-white/6 to-limoncello/16 p-6 backdrop-blur-xl" data-tilt>
+                                <img src="https://images.unsplash.com/photo-1522199999338-1e6620d14180?auto=format&fit=crop&w=1000&q=80" alt="Intention timeline showing achievements" class="aspect-[16/10] w-full rounded-[24px] object-cover shadow-card" loading="lazy">
+                                <figcaption class="mt-4 space-y-2 text-sm text-white/70">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Intention timelines</p>
+                                    <p>Micro victories bloom as color-coded constellations. Every milestone is private, poetic, and ready to be replayed when you need proof of growth.</p>
+                                </figcaption>
+                            </figure>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="section section-founder" aria-label="Founder story">
-            <div class="founder-inner">
-                <div class="founder-portrait" aria-hidden="true">
-                    <svg viewBox="0 0 120 120" role="presentation">
-                        <circle cx="60" cy="60" r="58" fill="#f4ecff" />
-                        <path d="M40 72 C44 58 52 50 60 50 C68 50 76 58 80 72" stroke="#0d0c22" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.6" />
-                        <circle cx="45" cy="50" r="6" fill="#0d0c22" opacity="0.6" />
-                        <circle cx="75" cy="50" r="6" fill="#0d0c22" opacity="0.6" />
-                    </svg>
+            <section class="relative py-24 sm:py-32">
+                <div class="mx-auto flex w-[92vw] max-w-6xl flex-col gap-12 px-6 xl:px-0">
+                    <div class="max-w-2xl space-y-6">
+                        <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Daily flow</span>
+                        <h2 class="font-display text-4xl text-white sm:text-5xl">A day inside Thinks.</h2>
+                        <p class="text-lg leading-relaxed text-white/70">
+                            Your ritual architecture is orchestrated by a mindful intelligence. Soft cues in the morning, centered check-ins at noon, reflective membranes by night—each step designed like a score.
+                        </p>
+                    </div>
+                    <div class="tilt-scene grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                        <article class="tilt-card flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-sorbet/15 p-6 backdrop-blur-xl" data-tilt>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Sunrise</span>
+                            <h3 class="font-display text-2xl text-white">Awaken Ritual</h3>
+                            <p class="text-sm leading-relaxed text-white/70">
+                                Five-minute sequences tune gratitude, breath, and the intention you choose while gradients mirror dawn light.
+                            </p>
+                        </article>
+                        <article class="tilt-card flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-marina/15 p-6 backdrop-blur-xl" data-tilt>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Midday</span>
+                            <h3 class="font-display text-2xl text-white">Attune Midday</h3>
+                            <p class="text-sm leading-relaxed text-white/70">
+                                Tone-aware prompts surface just enough data to keep you aligned, never overwhelmed. Your aura analytics remain encrypted and local.
+                            </p>
+                        </article>
+                        <article class="tilt-card flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-limoncello/15 p-6 backdrop-blur-xl" data-tilt>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Twilight</span>
+                            <h3 class="font-display text-2xl text-white">Release Twilight</h3>
+                            <p class="text-sm leading-relaxed text-white/70">
+                                Evening reflections dissolve tension using sound therapy and visual breathing loops that guide you into rest.
+                            </p>
+                        </article>
+                        <article class="tilt-card flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-pistachio/18 p-6 backdrop-blur-xl" data-tilt>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Sunday</span>
+                            <h3 class="font-display text-2xl text-white">Sunday Summit</h3>
+                            <p class="text-sm leading-relaxed text-white/70">
+                                Cinematic recaps highlight patterns worth keeping and suggest rituals for the week ahead. Data stays private, insights feel luminous.
+                            </p>
+                        </article>
+                    </div>
                 </div>
-                <article class="founder-note">
-                    <p>“Thinks. was born from private retreats along the Amalfi coast, where every ritual began with color and ended with calm. We wanted to bottle that feeling—a studio that greets you like your favorite seaside sanctuary.”</p>
-                    <p>“We believe spiritual growth deserves the same design care as the finest hardware—precise, cinematic, and deeply human.”</p>
-                    <span>Elena Venti · Founder & Ritual Architect</span>
-                </article>
-            </div>
-        </section>
+            </section>
 
-        <section class="section" aria-label="Testimonials">
-            <div class="panel with-grain" style="background: var(--aura-gradient); color: var(--petal);">
-                <h2>Every reflection becomes a luminous data point.</h2>
-                <p>
-                    Thinks. listens to your journaling tone, breath cadence, and mindful moments. We transform that into luminous insights—never sold, always encrypted, only for you. Watch your spiritual level evolve with color-on-color dashboards that feel as intimate as a whispered mantra.
-                </p>
-                <div class="stories">
-                    <article class="story">
-                        <p>“Thinks. turns self-work into a ritual I crave. The gradients feel like they were painted for my soul.”</p>
-                        <span>Nova — Artist & Mystic</span>
-                    </article>
-                    <article class="story">
-                        <p>“I finally have a private space to measure what matters—presence, not productivity.”</p>
-                        <span>Ravi — Conscious Builder</span>
-                    </article>
-                    <article class="story">
-                        <p>“The color feedback keeps me grounding in beauty. I see the shifts I feel.”</p>
-                        <span>Lina — Mindful Founder</span>
-                    </article>
+            <section id="membership" class="relative overflow-hidden py-24 sm:py-32">
+                <div class="parallax-layer absolute inset-0 -z-10 bg-gradient-to-br from-[#f9f0c7]/10 via-[#f1edff]/10 to-[#d7f4ef]/10" aria-hidden="true" data-parallax-speed="-0.04"></div>
+                <div class="parallax-layer absolute left-[-10%] top-[20%] h-72 w-72 rounded-full bg-gradient-to-br from-[#ffe9f4]/50 via-[#f5ffde]/40 to-[#d7f4ef]/40 blur-3xl" aria-hidden="true" data-parallax-speed="0.12"></div>
+                <div class="mx-auto w-[92vw] max-w-6xl space-y-16 px-6 xl:px-0">
+                    <div class="max-w-2xl space-y-6">
+                        <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Membership</span>
+                        <h2 class="font-display text-4xl text-white sm:text-5xl">Choose the depth, not the price.</h2>
+                        <p class="text-lg leading-relaxed text-white/70">
+                            We invite members in gentle waves. Every tier shares the same investment—it’s about how deeply you want the studio to meet you.
+                        </p>
+                    </div>
+                    <div class="tilt-scene grid gap-6 md:grid-cols-3">
+                        <article class="tilt-card flex flex-col gap-6 rounded-[32px] border border-white/10 bg-gradient-to-br from-white/15 via-white/8 to-sorbet/18 p-8 backdrop-blur-xl" data-tilt>
+                            <div class="flex items-baseline gap-3 text-white/70">
+                                <span class="text-xs font-semibold uppercase tracking-[0.28em]">01</span>
+                                <h3 class="font-display text-3xl text-white">Solos</h3>
+                            </div>
+                            <p class="text-sm leading-relaxed text-white/70">
+                                Daily rituals, guided reflections, and aura analytics calibrated to your energy. Perfect for founders and artists nurturing private practice.
+                            </p>
+                            <ul class="space-y-2 text-sm text-white/60">
+                                <li>• 90-day adaptive journeys</li>
+                                <li>• On-device tone analysis</li>
+                                <li>• Mirror display scenes</li>
+                            </ul>
+                        </article>
+                        <article class="tilt-card flex flex-col gap-6 rounded-[32px] border border-white/10 bg-white/10 p-8 backdrop-blur-xl shadow-halo" data-tilt>
+                            <div class="flex items-baseline gap-3 text-petal">
+                                <span class="text-xs font-semibold uppercase tracking-[0.28em]">02</span>
+                                <h3 class="font-display text-3xl text-white">Circles</h3>
+                            </div>
+                            <p class="text-sm leading-relaxed text-white/75">
+                                Spin up a private cohort with trusted friends. Share rituals, sync intentions, and keep journals encrypted and personal.
+                            </p>
+                            <ul class="space-y-2 text-sm text-white/70">
+                                <li>• Shared ritual timelines</li>
+                                <li>• Secure circle check-ins</li>
+                                <li>• Mentor office hours access</li>
+                            </ul>
+                        </article>
+                        <article class="tilt-card flex flex-col gap-6 rounded-[32px] border border-white/10 bg-gradient-to-br from-white/15 via-white/8 to-seafoam/18 p-8 backdrop-blur-xl" data-tilt>
+                            <div class="flex items-baseline gap-3 text-white/70">
+                                <span class="text-xs font-semibold uppercase tracking-[0.28em]">03</span>
+                                <h3 class="font-display text-3xl text-white">Salons</h3>
+                            </div>
+                            <p class="text-sm leading-relaxed text-white/70">
+                                Seasonal salons with the founding team and invited mystics. Includes custom color therapy, ritual scoring, and mirror display choreography.
+                            </p>
+                            <ul class="space-y-2 text-sm text-white/60">
+                                <li>• Quarterly immersive salons</li>
+                                <li>• Bespoke ritual scoring</li>
+                                <li>• Invitation to Amalfi retreats</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative py-24 sm:py-32">
+                <div class="mx-auto w-[92vw] max-w-6xl space-y-16 px-6 xl:px-0">
+                    <div class="flex flex-wrap items-end justify-between gap-8">
+                        <div class="max-w-2xl space-y-6">
+                            <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Testimonials</span>
+                            <h2 class="font-display text-4xl text-white sm:text-5xl">Whispers from early members.</h2>
+                        </div>
+                        <div class="flex gap-6 text-xs font-semibold uppercase tracking-[0.28em] text-white/40">
+                            <span>Monocle</span>
+                            <span>Wallpaper*</span>
+                            <span>Kinfolk</span>
+                            <span>Cool Hunting</span>
+                        </div>
+                    </div>
+                    <div class="tilt-scene grid gap-6 md:grid-cols-3">
+                        <article class="tilt-card relative flex h-full flex-col gap-6 overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-8" data-tilt>
+                            <p class="text-lg leading-relaxed text-white/80">“Thinks. turns self-work into a ritual I crave. The gradients feel like they were painted for my soul.”</p>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Nova — Artist & Mystic</span>
+                            <div class="absolute inset-0 -z-10 opacity-40">
+                                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=60" alt="" class="h-full w-full object-cover">
+                            </div>
+                        </article>
+                        <article class="tilt-card relative flex h-full flex-col gap-6 overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-8" data-tilt>
+                            <p class="text-lg leading-relaxed text-white/80">“Finally, a spiritual tool that doesn’t shout for attention. Presence over productivity, in color.”</p>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Ravi — Conscious Builder</span>
+                            <div class="absolute inset-0 -z-10 opacity-40">
+                                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=900&q=60" alt="" class="h-full w-full object-cover">
+                            </div>
+                        </article>
+                        <article class="tilt-card relative flex h-full flex-col gap-6 overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-8" data-tilt>
+                            <p class="text-lg leading-relaxed text-white/80">“The pastel interface flows like a seafront sunrise in Positano—calm, intentional, unforgettable.”</p>
+                            <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Wallpaper* Futures</span>
+                            <div class="absolute inset-0 -z-10 opacity-40">
+                                <img src="https://images.unsplash.com/photo-1499678329028-101435549a4e?auto=format&fit=crop&w=900&q=60" alt="" class="h-full w-full object-cover">
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="relative py-24 sm:py-32">
+                <div class="mx-auto w-[92vw] max-w-5xl space-y-10 px-6 xl:px-0">
+                    <div class="space-y-6">
+                        <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">FAQ</span>
+                        <h2 class="font-display text-4xl text-white sm:text-5xl">Questions before you step inside?</h2>
+                        <p class="text-lg leading-relaxed text-white/70">Here’s how Thinks. stays private, adaptive, and restorative.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <details class="group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-sorbet/12 p-6 backdrop-blur-xl">
+                            <summary class="cursor-pointer text-sm font-semibold uppercase tracking-[0.28em] text-white/70 transition group-open:text-white">
+                                Is Thinks. a social network?
+                            </summary>
+                            <p class="mt-4 text-sm leading-relaxed text-white/70">
+                                No feeds, no algorithmic nudges. Thinks. is a private studio designed for solo or small-circle practice. You decide what’s shared and when.
+                            </p>
+                        </details>
+                        <details class="group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-limoncello/12 p-6 backdrop-blur-xl">
+                            <summary class="cursor-pointer text-sm font-semibold uppercase tracking-[0.28em] text-white/70 transition group-open:text-white">
+                                How does the app adapt to me?
+                            </summary>
+                            <p class="mt-4 text-sm leading-relaxed text-white/70">
+                                We analyze tone, pacing, biofeedback, and ritual completion with on-device intelligence. Insights stay encrypted and surface as gentle recommendations only you can see.
+                            </p>
+                        </details>
+                        <details class="group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-marina/12 p-6 backdrop-blur-xl">
+                            <summary class="cursor-pointer text-sm font-semibold uppercase tracking-[0.28em] text-white/70 transition group-open:text-white">
+                                Can I import my existing practices?
+                            </summary>
+                            <p class="mt-4 text-sm leading-relaxed text-white/70">
+                                Yes. Import meditations, breath exercises, or journal prompts and our ritual engine redesigns them with Thinks.’ color language and pacing.
+                            </p>
+                        </details>
+                        <details class="group overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-seafoam/12 p-6 backdrop-blur-xl">
+                            <summary class="cursor-pointer text-sm font-semibold uppercase tracking-[0.28em] text-white/70 transition group-open:text-white">
+                                What devices are supported?
+                            </summary>
+                            <p class="mt-4 text-sm leading-relaxed text-white/70">
+                                iPhone and iPad at launch, with optional mirror display and Apple TV scenes for your meditation space. Mac and Vision Pro layouts arrive soon.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative overflow-hidden py-24 sm:py-32">
+                <div class="parallax-layer absolute inset-0 -z-10 bg-gradient-to-br from-[#f1edff]/20 via-transparent to-[#ffe7f5]/20" aria-hidden="true" data-parallax-speed="-0.02"></div>
+                <div class="mx-auto grid w-[92vw] max-w-6xl gap-16 px-6 lg:grid-cols-[0.9fr_1.1fr] xl:px-0">
+                    <div class="flex flex-col items-start gap-6">
+                        <div class="relative aspect-square w-56 overflow-hidden rounded-full border border-white/20 bg-white/10 p-6 backdrop-blur-xl">
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-[#ffe7f5]/40 via-[#d7f4ef]/40 to-[#f9f0c7]/40 blur-2xl" aria-hidden="true"></div>
+                            <svg viewBox="0 0 120 120" role="presentation" class="relative z-10 h-full w-full opacity-80 text-white">
+                                <circle cx="60" cy="60" r="58" fill="url(#gradient-face)" opacity="0.4" />
+                                <defs>
+                                    <linearGradient id="gradient-face" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#f4ecff" />
+                                        <stop offset="100%" stop-color="#d7f4ef" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M40 72 C44 58 52 50 60 50 C68 50 76 58 80 72" stroke="#0d0c22" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.4" />
+                                <circle cx="45" cy="50" r="6" fill="#0d0c22" opacity="0.4" />
+                                <circle cx="75" cy="50" r="6" fill="#0d0c22" opacity="0.4" />
+                            </svg>
+                        </div>
+                        <div class="space-y-4">
+                            <h2 class="font-display text-4xl text-white sm:text-5xl">Notes from our ritual architect.</h2>
+                            <p class="text-base leading-relaxed text-white/70">
+                                “Thinks. was born from retreats along the Amalfi coast, where every ritual began with color and ended with calm. We wanted to bottle that feeling—a studio that greets you like your favorite seaside sanctuary.”
+                            </p>
+                            <p class="text-base leading-relaxed text-white/70">
+                                “We believe spiritual growth deserves the same design care as the finest hardware—precise, cinematic, and deeply human.”
+                            </p>
+                        </div>
+                        <span class="text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Elena Venti · Founder & Ritual Architect</span>
+                    </div>
+                    <div class="tilt-scene grid gap-8">
+                        <article class="tilt-card rounded-[32px] border border-white/10 bg-gradient-to-br from-[#40226f]/50 via-[#1b0f33]/80 to-[#050314]/95 p-8 text-white shadow-halo" data-tilt>
+                            <h3 class="font-display text-3xl">Every reflection becomes luminous data.</h3>
+                            <p class="mt-4 text-sm leading-relaxed text-white/70">
+                                Thinks. listens to journaling tone, breath cadence, and mindful check-ins. We translate those into color-on-color dashboards that stay encrypted and only unlock when you want insight.
+                            </p>
+                            <div class="mt-8 grid gap-4 md:grid-cols-3">
+                                <div class="rounded-2xl border border-white/10 bg-white/10 p-4 text-xs uppercase tracking-[0.28em] text-white/70">
+                                    Aura spectrums
+                                </div>
+                                <div class="rounded-2xl border border-white/10 bg-white/10 p-4 text-xs uppercase tracking-[0.28em] text-white/70">
+                                    Somatic loops
+                                </div>
+                                <div class="rounded-2xl border border-white/10 bg-white/10 p-4 text-xs uppercase tracking-[0.28em] text-white/70">
+                                    Memory blossoms
+                                </div>
+                            </div>
+                        </article>
+                        <article class="tilt-card rounded-[32px] border border-white/10 bg-gradient-to-br from-white/12 via-white/6 to-sorbet/15 p-8 backdrop-blur-xl text-white" data-tilt>
+                            <h3 class="font-display text-3xl">Import what already works.</h3>
+                            <p class="mt-4 text-sm leading-relaxed text-white/70">
+                                Bring your meditations, journal prompts, or breath sequences. We transmute them with Thinks.’ color language, timing, and biometric feedback so your rituals feel fresh yet familiar.
+                            </p>
+                            <a href="#join" class="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-petal transition hover:text-white">
+                                Request a personal walkthrough
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M13 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative py-24 sm:py-32">
+                <div class="mx-auto flex w-[92vw] max-w-5xl flex-col items-center gap-10 rounded-[40px] border border-white/10 bg-gradient-to-br from-sorbet/20 via-white/12 to-seafoam/18 px-8 py-16 text-center backdrop-blur-xl">
+                    <span class="inline-flex rounded-full border border-white/10 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-white/60">Join us</span>
+                    <h2 class="font-display text-4xl text-white sm:text-5xl">Ready to evolve in private, in color?</h2>
+                    <p class="max-w-2xl text-lg leading-relaxed text-white/70">
+                        Request your invite to the Thinks. private evolution studio. We’ll orchestrate a guided minute so you can feel the sanctuary before you commit.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-4">
+                        <a href="mailto:hello@thinks.app?subject=Join%20the%20Thinks%20Waitlist" class="inline-flex items-center justify-center rounded-full bg-white px-10 py-3 text-sm font-semibold uppercase tracking-[0.32em] text-ink shadow-card transition hover:-translate-y-1 hover:shadow-halo">Request invite</a>
+                        <a href="#" class="inline-flex items-center justify-center rounded-full border border-white/20 px-10 py-3 text-sm font-semibold uppercase tracking-[0.32em] text-white/80 transition hover:border-white/40 hover:bg-white/10 hover:text-white">Experience a guided minute</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer id="join" class="border-t border-white/10 bg-black/60 py-12 backdrop-blur-xl">
+            <div class="mx-auto flex w-[92vw] max-w-6xl flex-col gap-8 px-6 text-white/70 md:flex-row md:items-center md:justify-between xl:px-0">
+                <div>
+                    <h2 class="font-display text-3xl text-white">Thinks.</h2>
+                    <p class="mt-2 text-sm text-white/60">Minimal interface · Maximal presence</p>
+                </div>
+                <div class="flex flex-col items-start gap-3 text-sm md:items-end">
+                    <a href="mailto:hello@thinks.app?subject=Join%20the%20Thinks%20Waitlist" class="text-sm font-semibold uppercase tracking-[0.28em] text-white transition hover:text-petal">hello@thinks.app</a>
+                    <p class="text-xs uppercase tracking-[0.28em] text-white/50">© <span id="year"></span> Thinks. All rights reserved.</p>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <footer id="join">
-        <div class="footer-inner">
-            <h2 class="footer-headline">Ready to evolve in private, in color?</h2>
-            <div class="footer-actions">
-                <a href="mailto:hello@thinks.app?subject=Join%20the%20Thinks%20Waitlist">Request invite</a>
-                <a href="#">Experience a guided minute</a>
-            </div>
-            <div class="footer-meta">
-                <span>© <span id="year"></span> Thinks. All rights reserved.</span>
-                <span>Minimal interface · Maximal presence</span>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('year');
+            if (yearEl) {
+                yearEl.textContent = new Date().getFullYear();
+            }
+
+            if (window.Lenis) {
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smoothWheel: true,
+                    smoothTouch: false
+                });
+
+                const raf = (time) => {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                };
+
+                requestAnimationFrame(raf);
+            }
+
+            const nav = document.querySelector('[data-nav]');
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const handleScroll = () => {
+                if (!nav) return;
+                if (window.scrollY > 40) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            };
+
+            const parallaxItems = prefersReducedMotion.matches ? [] : [...document.querySelectorAll('[data-parallax-speed]')];
+            const updateParallax = () => {
+                if (!parallaxItems.length) return;
+                const scrollY = window.scrollY || window.pageYOffset;
+                parallaxItems.forEach((el) => {
+                    const speed = parseFloat(el.dataset.parallaxSpeed || '0');
+                    const offset = scrollY * speed;
+                    el.style.transform = `translate3d(0, ${offset}px, 0)`;
+                });
+            };
+
+            const handleMotionPreference = (event) => {
+                if (event.matches) {
+                    parallaxItems.forEach((el) => {
+                        el.style.transform = '';
+                    });
+                }
+            };
+
+            if (prefersReducedMotion.addEventListener) {
+                prefersReducedMotion.addEventListener('change', handleMotionPreference);
+            } else if (prefersReducedMotion.addListener) {
+                prefersReducedMotion.addListener(handleMotionPreference);
+            }
+
+            const enableTilt = window.matchMedia('(pointer: fine)').matches && !prefersReducedMotion.matches;
+            if (enableTilt) {
+                const tiltCards = [...document.querySelectorAll('[data-tilt]')];
+                tiltCards.forEach((card) => {
+                    const handleMove = (event) => {
+                        const rect = card.getBoundingClientRect();
+                        const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+                        const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+                        const x = clientX - rect.left;
+                        const y = clientY - rect.top;
+                        const rotateY = ((x / rect.width) - 0.5) * 18;
+                        const rotateX = ((y / rect.height) - 0.5) * -18;
+                        card.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+                        card.classList.add('is-tilting');
+                    };
+
+                    const resetTilt = () => {
+                        card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                        card.classList.remove('is-tilting');
+                    };
+
+                    card.addEventListener('mousemove', handleMove);
+                    card.addEventListener('mouseleave', resetTilt);
+                    card.addEventListener('touchmove', handleMove, { passive: true });
+                    card.addEventListener('touchend', resetTilt);
+                });
+            }
+
+            updateParallax();
+            handleScroll();
+            let ticking = false;
+            const onScroll = () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateParallax();
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            };
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', updateParallax);
+        });
+    </script>
+
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
+
+        const canvas = document.getElementById('aurora-globe');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        if (canvas && !prefersReducedMotion.matches) {
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.1;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+            camera.position.set(0, 0, 4);
+
+            const geometry = new THREE.IcosahedronGeometry(1.25, 5);
+            const basePositions = geometry.attributes.position.array.slice();
+            const positionAttr = geometry.attributes.position;
+            const normalAttr = geometry.attributes.normal;
+
+            const material = new THREE.MeshPhysicalMaterial({
+                color: 0xffcbb2,
+                metalness: 0.18,
+                roughness: 0.28,
+                transmission: 0.48,
+                thickness: 1.6,
+                clearcoat: 1,
+                clearcoatRoughness: 0.18,
+                sheen: 1,
+                sheenColor: new THREE.Color(0xfff3f9),
+                iridescence: 0.2,
+                iridescenceIOR: 1.1
+            });
+
+            const orb = new THREE.Mesh(geometry, material);
+            scene.add(orb);
+
+            const ambient = new THREE.AmbientLight(0xffffff, 0.45);
+            const warmLight = new THREE.PointLight(0xffd2b0, 1.4);
+            warmLight.position.set(4, 3, 4);
+            const coolLight = new THREE.PointLight(0x9ce7ff, 1.1);
+            coolLight.position.set(-3, -4, -2);
+            const haloLight = new THREE.PointLight(0xffbde9, 0.8);
+            haloLight.position.set(0, 3, -4);
+            scene.add(ambient, warmLight, coolLight, haloLight);
+
+            const clock = new THREE.Clock();
+            let smoothScrollRotation = 0;
+            let targetRotation = 0;
+
+            const resizeRenderer = () => {
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+                if (width === 0 || height === 0) return;
+                const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+                const targetWidth = Math.floor(width * pixelRatio);
+                const targetHeight = Math.floor(height * pixelRatio);
+                if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
+                    renderer.setPixelRatio(pixelRatio);
+                    renderer.setSize(width, height, false);
+                }
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            };
+
+            resizeRenderer();
+
+            let resizeObserver;
+            if ('ResizeObserver' in window) {
+                resizeObserver = new ResizeObserver(resizeRenderer);
+                resizeObserver.observe(canvas);
+            }
+            window.addEventListener('resize', resizeRenderer);
+
+            const updateScrollTarget = () => {
+                const doc = document.documentElement;
+                const maxScroll = doc.scrollHeight - window.innerHeight;
+                targetRotation = maxScroll > 0 ? (window.scrollY / maxScroll) * Math.PI * 2 : 0;
+            };
+
+            updateScrollTarget();
+            window.addEventListener('scroll', updateScrollTarget, { passive: true });
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                resizeRenderer();
+
+                const elapsed = clock.getElapsedTime();
+                smoothScrollRotation += (targetRotation - smoothScrollRotation) * 0.05;
+
+                const positions = positionAttr.array;
+                const normals = normalAttr.array;
+
+                for (let i = 0; i < positions.length; i += 3) {
+                    const nx = normals[i];
+                    const ny = normals[i + 1];
+                    const nz = normals[i + 2];
+
+                    const wave = Math.sin(elapsed * 0.8 + i * 0.02) * 0.015 + Math.cos(elapsed * 0.6 + i * 0.015) * 0.01;
+
+                    positions[i] = basePositions[i] + nx * wave;
+                    positions[i + 1] = basePositions[i + 1] + ny * wave;
+                    positions[i + 2] = basePositions[i + 2] + nz * wave;
+                }
+
+                positionAttr.needsUpdate = true;
+                orb.rotation.y = smoothScrollRotation + elapsed * 0.24;
+                orb.rotation.x = Math.sin(elapsed * 0.3) * 0.25;
+                orb.rotation.z = Math.cos(elapsed * 0.22) * 0.18;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            const handleMotionChange = (event) => {
+                if (event.matches) {
+                    if (resizeObserver) {
+                        resizeObserver.disconnect();
+                    }
+                    renderer.dispose();
+                }
+            };
+
+            if (prefersReducedMotion.addEventListener) {
+                prefersReducedMotion.addEventListener('change', handleMotionChange);
+            } else if (prefersReducedMotion.addListener) {
+                prefersReducedMotion.addListener(handleMotionChange);
+            }
+        }
     </script>
 </body>
 </html>
